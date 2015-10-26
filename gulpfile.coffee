@@ -30,7 +30,7 @@ gulp.task 'typescript', () ->
 	.pipe $.plumber()
 	.pipe $.typescript {
 		module:"amd"
-		target: 'ES6'
+		target: 'ES5'
 		removeComments: true
 		sortOutput: false
 		sourcemap: false
