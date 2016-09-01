@@ -2,6 +2,8 @@
 
 class Main {
   run() {
-    console.log('Start App');
+    console.log('Start App!!!!!');
   }
 }
+
+module.exports = Main;
