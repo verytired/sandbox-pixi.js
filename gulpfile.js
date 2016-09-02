@@ -21,7 +21,7 @@ gulp.task('browserify', function () {
       console.log("Error : " + err.message);
     })
     .pipe(source('app.js'))
-    .pipe(gulp.dest('./app/js'))
+    .pipe(gulp.dest('./build/js'))
 });
 
 gulp.task('watch', function () {
