@@ -1,31 +1,30 @@
 
 var http = require('http');
 var fs = require('fs');
-var express = require('express');
-var app = express();
-
-// HTTPリクエストを受け取る部分
-app.get('/', function (req, res) {
-  res.send('Hello World!');
-});
-
-// サーバーを起動する部分
-// var server = app.listen(3000, function () {
-//   var host = server.address().address;
-//   var port = server.address().port;
-//   console.log('Example app listening at http://%s:%s', host, port);
-// });
+var mime= require('mime');
 
 http.createServer(function (req, res) {
-  fs.readFile('src/html/index.html', 'utf-8', function (err, data) {
-    if (err) {
-      res.writeHead(404, {'Content-Type': 'text/plain'});
-      res.write('not found!');
-      return res.end();
+
+  // Check File Path
+  var path;
+  if(req.url === '/') {
+    path = 'public/index.html';
+  } else {
+    path = './' + req.url;
+  }
+
+  // Read File and Write
+  fs.readFile(path, function (err, data) {
+    if(err) {
+      res.writeHead(404, {"Content-Type": "text/plain"});
+      return res.end(req.url + ' not found.');
     }
-    res.writeHead(200, {'Content-Type': 'text/html'});
+    var type = mime.lookup(path);
+    res.writeHead(200, {"Content-Type": type});
     res.write(data);
     res.end();
   });
+
 }).listen(8080);
+
 console.log('server started on 8080');
