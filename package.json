@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "babel-eslint": "^6.1.2",
     "babelify": "^6.1.1",
     "browser-sync": "^2.8.0",
     "browserify": "^10.2.1",
