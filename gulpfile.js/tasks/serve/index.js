@@ -12,6 +12,21 @@ var $ = require('gulp-load-plugins')({
   replaceString: /\bgulp[\-.]/
 });
 
+// npmで入れたフロントエンドライブラリのconcat処理
+gulp.task('vendor', () => {
+  return gulp.src([
+      'node_modules/pixi.js/bin/pixi.min.js'
+    ])
+    .pipe($.plumber({
+      errorHandler: (error) => {
+        notify('vendor', error);
+      }
+    }))
+    .pipe($.concat('vendor.js'))
+    .pipe($.plumber.stop())
+    .pipe(gulp.dest('./build/dist'));
+});
+
 gulp.task('browserify', function () {
   browserify({
     entries: ['./src/js/index.js'],
@@ -32,14 +47,15 @@ gulp.task('watch', function () {
 });
 
 gulp.task('serve', function () {
-  browserSync({
-    notify: false,
-    server: {baseDir: 'app/'}
-  })
+  // todo : nodeサーバを直接起動リロードさせたい
+  // browserSync({
+  //   notify: false,
+  //   server: {baseDir: 'app/'}
+  // })
 });
 
 gulp.task('bs-reload', function () {
   browserSync.reload();
 });
 
-gulp.task('default', ['browserify', 'watch', 'serve']);
+gulp.task('default', ['vendor', 'browserify', 'watch', 'serve']);
