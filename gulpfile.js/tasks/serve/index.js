@@ -5,11 +5,43 @@ var gulp = require('gulp');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var browserSync = require('browser-sync');
+var reload = browserSync.reload;
 
 //load all module
 var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'gulp.*', 'browserify**'],
   replaceString: /\bgulp[\-.]/
+});
+
+
+
+gulp.task('nodemon', function(cb) {
+    var called = false;
+    return $.nodemon({
+        script: './src/server.js',
+        ext: 'js html css', // 監視するファイルの拡張子
+        ignore: ['./public', 'node_modules']
+    })
+    .on('start', function() {
+        // サーバー起動時
+        if (!called) {
+            called = true;
+            cb();
+        }
+    })
+    .on('restart', function() {
+        // サーバー再起動時
+        setTimeout(function() {
+            reload();
+        }, 500);
+    });
+});
+
+gulp.task('browser-sync', ['nodemon'], function() {
+    browserSync.init(null, {
+        proxy: 'http://localhost:8080',
+        port: 7000
+    });
 });
 
 // npmで入れたフロントエンドライブラリのconcat処理
@@ -43,19 +75,14 @@ gulp.task('browserify', function () {
 
 gulp.task('watch', function () {
   gulp.watch('./src/js/*.js', ['browserify']);
-  gulp.watch('./app/js/*.js', ['bs-reload']);
 });
 
-gulp.task('serve', function () {
-  // todo : nodeサーバを直接起動リロードさせたい
-  // browserSync({
-  //   notify: false,
-  //   server: {baseDir: 'app/'}
-  // })
+gulp.task('serve', ['browser-sync'], function () {
+  gulp.watch('./src/js/*.js', ['browserify']);
 });
 
 gulp.task('bs-reload', function () {
   browserSync.reload();
 });
 
-gulp.task('default', ['vendor', 'browserify', 'watch', 'serve']);
+gulp.task('default', ['serve','vendor', 'browserify', 'watch', 'serve']);
