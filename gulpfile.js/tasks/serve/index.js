@@ -41,21 +41,6 @@ gulp.task('browser-sync', ['nodemon'], function() {
     });
 });
 
-// npmで入れたフロントエンドライブラリのconcat処理
-gulp.task('vendor', () => {
-  return gulp.src([
-      'node_modules/pixi.js/bin/pixi.min.js'
-    ])
-    .pipe($.plumber({
-      errorHandler : (error) => {
-        notify('vendor', error);
-      }
-    }))
-    .pipe($.concat('vendor.js'))
-    .pipe($.plumber.stop())
-    .pipe(gulp.dest('./build/dist'));
-});
-
 gulp.task('browserify', function() {
   browserify({
     entries : ['./src/js/index.js'],
@@ -79,4 +64,4 @@ gulp.task('bs-reload', function() {
   browserSync.reload();
 });
 
-gulp.task('serve', ['browser-sync', 'vendor', 'browserify', 'watch']);
+gulp.task('serve', ['browser-sync', 'browserify', 'watch']);

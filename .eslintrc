@@ -1,6 +1,7 @@
 // todo : eslint 仮設定
 {
   "env": {
+    "browser": true,
     "node": true,
   },
   "parser": "babel-eslint",
