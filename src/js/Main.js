@@ -38,7 +38,6 @@ class Main {
     stage.addChild(bunny);
 
     window.addEventListener('resize', function(){
-      console.log('resize');
       renderer.resize(window.innerWidth, window.innerHeight);
       bunny.position.x = window.innerWidth / 2;
       bunny.position.y = window.innerHeight / 2;
