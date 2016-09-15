@@ -16,9 +16,9 @@ var $ = require('gulp-load-plugins')({
 gulp.task('nodemon', function(cb) {
     var called = false;
     return $.nodemon({
-        script: './server.js',
+        script: './src/server.js',
         ext: 'js html css', // 監視するファイルの拡張子
-        ignore: ['./public', 'node_modules']
+        ignore: ['./build', 'node_modules']
     })
     .on('start', function() {
         // サーバー起動時
@@ -38,7 +38,7 @@ gulp.task('nodemon', function(cb) {
 gulp.task('browser-sync', ['nodemon'], function() {
     browserSync.init(null, {
         proxy : 'http://localhost:8080',
-        port  : 8080
+        port  : 5000
     });
 });
 
@@ -73,14 +73,11 @@ gulp.task('browserify', function() {
 
 gulp.task('watch', function() {
   gulp.watch('./src/js/*.js', ['browserify']);
-});
-
-gulp.task('serve', ['browser-sync'], function() {
-  gulp.watch('./src/js/*.js', ['browserify']);
+  gulp.watch('./public/*', ['bs-reload']);
 });
 
 gulp.task('bs-reload', function() {
   browserSync.reload();
 });
 
-gulp.task('default', ['serve', 'vendor', 'browserify', 'watch', 'serve']);
+gulp.task('serve', ['browser-sync', 'vendor', 'browserify', 'watch']);
