@@ -5,7 +5,6 @@ var gulp = require('gulp');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var browserSync = require('browser-sync');
-var reload = browserSync.reload;
 
 //load all module
 var $ = require('gulp-load-plugins')({
@@ -30,7 +29,7 @@ gulp.task('nodemon', function(cb) {
     .on('restart', function() {
         // サーバー再起動時
         setTimeout(function() {
-            reload();
+            browserSync.reload();
         }, 500);
     });
 });
@@ -65,7 +64,7 @@ gulp.task('browserify', function() {
     .transform('babelify')
     .bundle()
     .on("error", function(err) {
-      console.log("Error : " + err.message);
+      console.log("browserify Error : " + err.message);
     })
     .pipe(source('app.js'))
     .pipe(gulp.dest('./build/js'));
