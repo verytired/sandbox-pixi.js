@@ -13,12 +13,10 @@ var $ = require('gulp-load-plugins')({
   replaceString: /\bgulp[\-.]/
 });
 
-
-
 gulp.task('nodemon', function(cb) {
     var called = false;
     return $.nodemon({
-        script: './src/server.js',
+        script: './server.js',
         ext: 'js html css', // 監視するファイルの拡張子
         ignore: ['./public', 'node_modules']
     })
@@ -39,8 +37,8 @@ gulp.task('nodemon', function(cb) {
 
 gulp.task('browser-sync', ['nodemon'], function() {
     browserSync.init(null, {
-        proxy: 'http://localhost:8080',
-        port: 7000
+        proxy : 'http://localhost:8080',
+        port  : 8080
     });
 });
 
@@ -50,7 +48,7 @@ gulp.task('vendor', () => {
       'node_modules/pixi.js/bin/pixi.min.js'
     ])
     .pipe($.plumber({
-      errorHandler: (error) => {
+      errorHandler : (error) => {
         notify('vendor', error);
       }
     }))
@@ -59,30 +57,30 @@ gulp.task('vendor', () => {
     .pipe(gulp.dest('./build/dist'));
 });
 
-gulp.task('browserify', function () {
+gulp.task('browserify', function() {
   browserify({
-    entries: ['./src/js/index.js'],
-    debug: true
+    entries : ['./src/js/index.js'],
+    debug   : true
   })
     .transform('babelify')
     .bundle()
-    .on("error", function (err) {
+    .on("error", function(err) {
       console.log("Error : " + err.message);
     })
     .pipe(source('app.js'))
-    .pipe(gulp.dest('./build/js'))
+    .pipe(gulp.dest('./build/js'));
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', function() {
   gulp.watch('./src/js/*.js', ['browserify']);
 });
 
-gulp.task('serve', ['browser-sync'], function () {
+gulp.task('serve', ['browser-sync'], function() {
   gulp.watch('./src/js/*.js', ['browserify']);
 });
 
-gulp.task('bs-reload', function () {
+gulp.task('bs-reload', function() {
   browserSync.reload();
 });
 
-gulp.task('default', ['serve','vendor', 'browserify', 'watch', 'serve']);
+gulp.task('default', ['serve', 'vendor', 'browserify', 'watch', 'serve']);
