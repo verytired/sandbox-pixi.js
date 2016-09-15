@@ -1,8 +1,8 @@
-
-// entry point for app
+'use strict';
 
 const PIXI = require('pixi.js');
 
+// entry point for app
 class Main {
   run() {
     console.log('Start PIXI.JS!!!!');
@@ -36,8 +36,7 @@ class Main {
 
     // 9. StageにSpriteを追加
     stage.addChild(bunny);
-
-    window.addEventListener('resize', function(){
+    window.addEventListener('resize', () => {
       renderer.resize(window.innerWidth, window.innerHeight);
       bunny.position.x = window.innerWidth / 2;
       bunny.position.y = window.innerHeight / 2;
