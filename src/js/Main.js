@@ -5,7 +5,7 @@ const PIXI = require('pixi.js');
 
 class Main {
   run() {
-    console.log('Start PIXI.js!!!!');
+    console.log('Start PIXI.JS!!!!');
 
     // 1. Stageの生成
     const stage = new PIXI.Stage(0x66FF99);
@@ -20,10 +20,10 @@ class Main {
     requestAnimationFrame( animate );
 
     // 5. 画像ファイルを読み込んでTextureを取得
-    const texture = PIXI.Texture.fromImage("public/bunny.jpg");
+    const texture = PIXI.Texture.fromImage('public/bunny.jpg');
 
     // 6.取得したTextureを使ってSpriteを生成
-    let bunny = new PIXI.Sprite(texture);
+    const bunny = new PIXI.Sprite(texture);
 
     // 7. SpriteでのTextureの位置を調整
     bunny.anchor.x = 0.5;
@@ -39,14 +39,14 @@ class Main {
     // 10. 描画時のフレーム毎の処理を記述
     function animate() {
 
-        // 11. 次のrequestAnimFrameでanimateの実行を再度指定
-        requestAnimationFrame( animate );
+      // 11. 次のrequestAnimFrameでanimateの実行を再度指定
+      requestAnimationFrame(animate);
 
-        // 12. stageに配置したSpriteを回転
-        bunny.rotation += 0.1;
+      // 12. stageに配置したSpriteを回転
+      bunny.rotation += 0.1;
 
-        // 13. 処理の結果をrendererがStageに描画
-        renderer.render(stage);
+      // 13. 処理の結果をrendererがStageに描画
+      renderer.render(stage);
 
     }
 
