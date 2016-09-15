@@ -1,4 +1,4 @@
 import Main from './Main.js';
 
-var main = new Main();
+const main = new Main();
 main.run();
