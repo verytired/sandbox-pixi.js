@@ -11,10 +11,11 @@ class Main {
     const stage = new PIXI.Stage(0x66FF99);
 
     // 2. 環境に応じたrendererの生成
-    const  renderer = PIXI.autoDetectRenderer(400, 300);
+    const renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);
 
     // 3．rendererが持つ表示要素をDOMに追加
-    document.body.appendChild(renderer.view);
+    let container = document.getElementById('container');
+    container.appendChild(renderer.view);
 
     // 4.後に定義してあるanimａte関数をrequestAnimFrameで実行
     requestAnimationFrame( animate );
@@ -30,12 +31,18 @@ class Main {
     bunny.anchor.y = 0.5;
 
     // 8. Spriteを任意の位置に移動
-    bunny.position.x = 200;
-    bunny.position.y = 150;
+    bunny.position.x = window.innerWidth / 2;
+    bunny.position.y = window.innerHeight / 2;
 
     // 9. StageにSpriteを追加
     stage.addChild(bunny);
 
+    window.addEventListener('resize', function(){
+      console.log('resize');
+      renderer.resize(window.innerWidth, window.innerHeight);
+      bunny.position.x = window.innerWidth / 2;
+      bunny.position.y = window.innerHeight / 2;
+    });
     // 10. 描画時のフレーム毎の処理を記述
     function animate() {
 
