@@ -1,3 +1,9 @@
 # sandbox-pixi.js
 
-tba
+pixi.js demo
+
+## Start
+
+```
+npm run start
+```
