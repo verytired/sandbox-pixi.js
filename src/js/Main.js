@@ -1,5 +1,3 @@
-'use strict';
-
 const PIXI = require('pixi.js');
 
 // entry point for app
@@ -33,6 +31,12 @@ class Main {
     // 8. Spriteを任意の位置に移動
     bunny.position.x = window.innerWidth / 2;
     bunny.position.y = window.innerHeight / 2;
+
+    // clickEvent付ける
+    bunny.interactive = true;
+    bunny.on('click', () => {
+      console.log('click bunny');
+    });
 
     // 9. StageにSpriteを追加
     stage.addChild(bunny);

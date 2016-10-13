@@ -1,4 +1,5 @@
-import Main from './Main.js';
+// import Main from './Main.js';
+import ShaderTest from './ShaderTest.js';
 
-const main = new Main();
-main.run();
+const app = new ShaderTest();
+app.run();
