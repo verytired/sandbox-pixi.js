@@ -4,31 +4,42 @@ class ShaderTest {
   run() {
     console.log('ShaderTest with PIXI.JS');
 
-    const renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight);
-    let container = document.getElementById('container');
-    container.appendChild(renderer.view);
-
     const width = window.innerWidth;
     const height = window.innerHeight;
+
+    const renderer = PIXI.autoDetectRenderer(width, height);
+    let container = document.getElementById('container');
+    container.appendChild(renderer.view);
 
     let stage = new PIXI.Container();
 
     // smoke shader
-    let uniforms = {};
-    uniforms.resolution = { type : 'v2', value : { x : width, y : height}};
-    uniforms.alpha = { type : '1f', value : 1.0};
-    uniforms.shift = { type : '1f', value : 1.6};
-    uniforms.time = {type : '1f', value : 0};
-    uniforms.speed = {type : 'v2', value : {x : 0.7, y : 0.4}};
+    function CustomFilter(fragmentSource) {
+      let uniforms = {};
+      uniforms.resolution = { type : '2f', value : [width, height] };
+      uniforms.alpha = { type : '1f', value : 2.0 };
+      uniforms.shift = { type : '1f', value : 1.6 };
+      uniforms.time = { type : '1f', value : 0 };
+      uniforms.speed = { type : '2f', value : [0.7, 0.4] };
 
-    let shaderCode = document.getElementById('fragShader').innerHTML;
-    let smokeShader = new PIXI.Filter(null, shaderCode, uniforms);
+      PIXI.Filter.call(this,
+        // vertex shader
+        null,
+        // fragment shader
+        fragmentSource,
+        uniforms
+      );
+    }
+    CustomFilter.prototype = Object.create(PIXI.Filter.prototype);
+    CustomFilter.prototype.constructor = CustomFilter;
 
-    let bg = PIXI.Sprite.fromImage('http://www.goodboydigital.com/pixijs/pixi_v3_github-pad.png');
+    const bg = PIXI.Sprite.fromImage('http://www.goodboydigital.com/pixijs/pixi_v3_github-pad.png');
     bg.width = width;
     bg.height = height;
-    bg.filters = [smokeShader];
     stage.addChild(bg);
+    const shaderCode = document.getElementById('fragShader').textContent;
+    const smokeShader = new CustomFilter(shaderCode);
+    bg.filters = [smokeShader];
 
     let logo = PIXI.Sprite.fromImage('http://www.goodboydigital.com/pixijs/pixi_v3_github-pad.png');
     logo.x = width / 2;
@@ -37,14 +48,10 @@ class ShaderTest {
     logo.blendMode = PIXI.BLEND_MODES.ADD;
     stage.addChild(logo);
 
-    let count = 0;
     function animate() {
-      // start the timer for the next animation loop
-      requestAnimationFrame(animate);
-      // this is the main render call that makes pixi draw your container and its children.
-      count+=0.01;
-      smokeShader.uniforms.time = count;
+      smokeShader.uniforms.time+=0.01;
       renderer.render(stage);
+      requestAnimationFrame(animate);
     }
     animate();
   }
