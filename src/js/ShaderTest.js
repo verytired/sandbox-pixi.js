@@ -13,32 +13,20 @@ class ShaderTest {
 
     let stage = new PIXI.Container();
 
-    // smoke shader
-    function CustomFilter(fragmentSource) {
-      let uniforms = {};
-      uniforms.resolution = { type : '2f', value : [width, height] };
-      uniforms.alpha = { type : '1f', value : 2.0 };
-      uniforms.shift = { type : '1f', value : 1.6 };
-      uniforms.time = { type : '1f', value : 0 };
-      uniforms.speed = { type : '2f', value : [0.7, 0.4] };
-
-      PIXI.Filter.call(this,
-        // vertex shader
-        null,
-        // fragment shader
-        fragmentSource,
-        uniforms
-      );
-    }
-    CustomFilter.prototype = Object.create(PIXI.Filter.prototype);
-    CustomFilter.prototype.constructor = CustomFilter;
-
     const bg = PIXI.Sprite.fromImage('http://www.goodboydigital.com/pixijs/pixi_v3_github-pad.png');
     bg.width = width;
     bg.height = height;
     stage.addChild(bg);
+
+    let uniforms = {};
+    uniforms.resolution = { type : '2f', value : [width, height] };
+    uniforms.alpha = { type : '1f', value : 2.0 };
+    uniforms.shift = { type : '1f', value : 1.6 };
+    uniforms.time = { type : '1f', value : 0 };
+    uniforms.speed = { type : '2f', value : [0.7, 0.4] };
+
     const shaderCode = document.getElementById('fragShader').textContent;
-    const smokeShader = new CustomFilter(shaderCode);
+    const smokeShader = new PIXI.Filter(null, shaderCode, uniforms);
     bg.filters = [smokeShader];
 
     let logo = PIXI.Sprite.fromImage('http://www.goodboydigital.com/pixijs/pixi_v3_github-pad.png');
